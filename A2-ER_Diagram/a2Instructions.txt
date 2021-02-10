@@ -1,0 +1,32 @@
+Instructions
+Airline Database
+In this assignment you will draw an entity-relationship diagram for an airline database.  This project will be continued in subsequent assignments (3 parts total; the ER diagram, the implementation in a relational database, and a we application).  
+
+The airlines and airports in Canada are getting together to manage their flight scheduling. Consider the following set of requirements for a database to manage flight schedules.
+
+Airlines have names and a unique code (for example, Air Canada's code is AC)
+Each airline offers flights. A flight has a flight number which is composed of the airline code and a 3 digit number (So flights from different airlines could have the same 3 digit number but would have a different airline code).  Each flight could be offered one or more (up to 7) days of the week. (Make this a multi valued attribute), a flight flies at most once a day.
+Flights can land (arrive) and take off (depart) from Airports.
+An airport has a name, a unique airport code (for example Toronto Pearson is XXY), a city and a province.
+Flights have scheduled arrival times at airports and scheduled departure times from airports and actual departure times and actual arrival times.
+Every airport must have at least one flight arrive and at least one flight depart. Flights may be cancelled and thus not land or take off.
+Airports can handle only certain airplane types.
+An Airplane Type has a type name, a maximum number of seats, and a company (manufacturer). For example an airplane type might be DC10, and the maximum number of seats would be 100 and the company would be Boeing. The airplane type name is always unique (i.e. no company would name it's plane the same name as another company). We aren't going to model any of the company data, so just make the company name at attribute of Airplane Type, do not make it it's own entity. 
+Every airplane types would be supported by at least one airport and an airport can always support at least one airplane type.
+Airlines own a fleet of Airplanes (each airline owns at least 3 airplanes) and every airplane is owned by an airline.
+Each Airplane has a unique airplane id and a year it was built. Each airplane is designed as one of the airplane types. Some airplane types are just prototypes and have no airplanes of that type built yet. 
+Each flight is assigned an airplane and it uses the same airplane for all it's flights but an airplane may be used by numerous flights. Not all airplanes are used on flights, some sit around as backup planes.
+If something is not explicitly stated, then there is an obvious choice. Do not add any extra relationships that you assume should exist, just include the ones mentioned above.
+
+Show both the cardinality of the relationships (the 1:M notation on the lines) and the participation (include both the (min, max) constraints AND the double line/single line notation). Do NOT include any extra information than is given above to illustrate the above database. For each entity, underline the key you would pick to be the primary key (if it is a weak entity, remember to use a dashed underline), if there is more than 1 possible key, underline the key you would pick to be the primary key.
+
+You will be marked on choosing the best solution, some solutions may work but not be the best!  You must use the notation shown in the videos.  Do NOT use UML-like notation.  Entities should be shown as boxes, attributes as ovals etc.
+
+Use draw.io or some other software that create E-R diagrams to create your E-R Diagram. Do NOT hand draw it. 
+
+
+What to Submit
+Submit the ER diagram in either .pdf or .jpg format.  You can screenshot if you wish or take a picture, but your submission MUST be legible.   Handwritten submissions will not be accepted.
+
+Extensions
+A 24 hour extension is available to everyone.  Beyond this, no extensions are given.  Submissions handed in late receive a mark of zero
