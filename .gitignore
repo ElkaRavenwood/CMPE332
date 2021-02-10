@@ -1,0 +1,6 @@
+# docx and pdfs
+*.pdf
+*.docx
+
+#  DS Store files
+*.DS_Store

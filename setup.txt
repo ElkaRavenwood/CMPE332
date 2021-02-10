@@ -1,0 +1,8 @@
+1) open ./XAMMP
+2) open manager.osx
+3) go to the "Manage Servers" tab
+4) start all (or at least the apache and sql ones)
+5) if apache won't run, run "sudo apachectl stop" then try again
+6) to access the ui, type in "localhost" on any browser
+7) click phpadmin (top right)
+
