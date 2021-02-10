@@ -16,7 +16,7 @@ CREATE TABLE AirplaneType (
 
 CREATE TABLE Airplane (
     AirplaneId varchar(255) NOT NULL,
-    YearBuilt year NOT NULL,
+    YearBuilt year,
     AirlineCode char(2) NOT NULL,
     AirplaneTypeName varchar(255) NOT NULL,
     PRIMARY KEY (AirplaneId),
