@@ -1,0 +1,35 @@
+Relational Algebra
+This assignment will give you practice using relational algebra.  It is to be done individually. 
+
+The relational algebra notation shown in the videos is the ONLY notation that will be permitted for this assignment.  Assignments written in alternate notations will receive a mark of 0.
+
+Show the relational algebra step(s) for each question.  Your query can be broken down into multiple steps, or it may consist of a single statement.  You should, however, think about "efficiency" at least to some extent. Think about selecting out relevant information before doing a join so the join is more efficient.  You will not be marked on efficiency, but keep it in mind when you are thinking about solutions.
+
+The assignment uses the Company database schema (below) as shown in the videos.  Primary keys for each relation are underlined.  Foreign keys are shown by the arrows.
+
+To help you visualize this database, you can refer to this relational instance which shows some potential data for this database.  Your queries must, however, work for any relational instance, not just for the data shown here.
+
+company schema
+
+1.    List the first name, last name and address of all employees who work in a department that has a number above 10.
+
+2.    Make a list containing the names of all female employees and female dependents.  The list should contain just one attribute, "Name".
+
+3.    Make a list of employees who do not have a daughter (as indicated by the "relationship" in the dependent table).  Include the employee's first name, last name and their SSN.
+
+4.   Show the names (first name, last name), SSN of all employees that have salary more than 30K and the projects that they work on (the project name, the project number).
+
+5.   For each employee who works in department number 4 or 5, show the employee's last name, their salary and the name of the department that they work in.
+
+6.   For each project, list the name of the project and the names (first and last) of the employees that work on the project.  If the project has no employees working on it, the project name should still be included in your result.
+
+7.  List the projects (project number and name) that employees (last name)  "Franklin" and "Wagner" BOTH work on (not either or, but both Franklin and Wagner must work on the project) but that the person with the last name "Zelwinger" does not.
+
+8.  Which employees (last name, first name and ssn) make more money than their manager?
+
+9.  For each manager, show the manager's name, SSN and their projects that they work on (include the project numbers and the number of hours they work on each).
+
+10.  List the name (first name, last name) of each employee and their dependents' names.  All employees should be included, whether or not they have dependents.
+
+Marking
+Each question will be marked out of 2.
