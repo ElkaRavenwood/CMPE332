@@ -79,15 +79,46 @@
 
     The algebra was split into several steps.
 
+    \begin{enumerate}
+        \item Select the department names and department numbers of all departments that have a department number of 4 or 5
+        \[ DDATA \gets \pi _{DNAME, \: DNUMBER} \: ( \: \sigma _{DNUMBER = 4 \: or \: DNUMBER = 5 } ( \: DEPARTMENT \:)) \]
+        \item Combine the reduced departments with all employees
+        \[ TEMP \gets DDATA \bowtie _{DDATA.DNUMBER = EMPLOYEE.DNO} EMPLOYEE \]
+        \item Select the appropriate columns
+        \[ ANS \gets \pi _{LNAME, \: SALARY, \: DNO, \: DNAME} (TEMP) \]
+    \end{enumerate}
 
+    There may be more than one person with the same last name, salary and department. That is, there is no guarantee that the last name, salary and department of an employee uniquely identifies said employee. Thus, the following statement, continuted form the above statements, has an additional attribute (SSN), but ensures that every employee in department 4 or 5 is listed with the department name.
+
+    \[ ALLANS \gets \pi _{LNAME, \: SALARY, \: DNO, \: DNAME, \: SSN} (TEMP)\]
 
 \section{Question 6}
 
     \textbf{For each project, list the name of the project and the names (first and last) of the employees that work on the project.  If the project has no employees working on it, the project name should still be included in your result.}
+    
+    The algebra was split into several steps.
+
+    \begin{enumerate}
+        \item Join the Works\_On and Project tables on the project number attribute
+        \[ ALLPDATA \gets PROJECT \bowtie _{PROJECT.PNUMBER = WORKS\_ON.PNO} \: WORKS\_ON \]
+        \item Select the relevant attributes
+        \[ PDATA \gets \pi _{PNAME, \: ESSN} \: ( \: ALLPDATA \: ) \]
+        \item Get the names of employees (and their SSN)
+        \[ EDATA \gets \pi _{FNAME, \: LNAME, \: SSN} \: ( \: EMPLOYEE \: ) \]
+        \item Combine the project data and employee data
+        \[ ANS \gets PDATA * _{(\: ESSN \:), \: ( \: SSN \: )} EDATA \]
+    \end{enumerate}
 
 \section{Question 7}
 
     \textbf{List the projects (project number and name) that employees (last name)  "Franklin" and "Wagner" BOTH work on (not either or, but both Franklin and Wagner must work on the project) but that the person with the last name "Zelwinger" does not.}
+    
+    The algebra was split into several steps.
+
+    \begin{enumerate}
+        \item Find all employees with the last names Franklin and Wagner
+        \item Find all employees with the last name Zelwinger
+    \end{enumerate}
 
 \section{Question 8}
 
