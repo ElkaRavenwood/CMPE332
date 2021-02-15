@@ -1,12 +1,104 @@
 \documentclass{article}
 \usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{amssymb}
 \title{CMPE 332 - Assignment 4 - Relational Algebra}
 \author{Jamie Won - 20113217}
 
 \begin{document}
 
+\setcounter{secnumdepth}{0}
 \maketitle
 \tableofcontents
 \cleardoublepage
 
+\section{Question 1}
+
+    \textbf{List the first name, last name and address of all employees who work in a department that has a number above 10}
+    \[ ANS \gets \pi _{\: FNAME, \: LNAME, \: ADDRESS} \: ( \: \sigma \: _{(DNO > 10)} \: (EMPLOYEE) \: )\]
+
+\section{Question 2}
+
+    \textbf{Make a list containing the names of all female employees and female dependents.  The list should contain just one attribute, "Name".}
+
+    It is assumed that the "name" consists of just the first name. The algebra was split into several steps.
+    
+    \begin{enumerate}
+        \item Project all the female employees' names
+        \[ FEMPLOYEE \gets \pi _{FNAME} \: ( \: \sigma \: _{(SEX = 'F')} \: (EMPLOYEE) \: )\]
+        \item Project all the female dependents' names
+        \[ FDEPENDENT \gets \pi _{FNAME} \: ( \: \sigma \: _{(SEX = 'F')} \: (DEPENDENT)) \: \]
+        \item Combine the two tables
+        \[ ALLFEMALES \gets FEMPLOYEE \cup FDEPENDENT \]
+        \item Rename "FNAME" to "Name"
+        \[ ANS_{Name} \gets \pi _{FNAME} \: ( \: ALLFEMALES \:) \]
+    \end{enumerate}
+    
+\section{Question 3}
+
+    \textbf{Make a list of employees who do not have a daughter (as indicated by the "relationship" in the dependent table).  Include the employee's first name, last name and their SSN.}
+
+    The algebra was split into several steps.
+    
+    \begin{enumerate}
+        \item Project the first name, last name and SSN of all employees
+        \[ EDATA \gets \pi _{FNAME, \: LNAME, \: SSN} \: (EMPLOYEE)\]
+        \item Project the relationship and employee SSN of all dependents
+        \[ DDATA \gets \pi _{ESSN, \: RELATIONSHIP} \: (DEPENDENT) \]
+        \item Find all employees with dependents
+        \[ EWITHDEPENDENT \gets EDATA \bowtie _{EDATA.SSN = DDATA.ESSN} DDATA \:  \]
+        \item Find all employees with daughters
+        \[ EWITHDAUGHTER \gets EWITHDEPENDENT\: \sigma _{RELATIONSHIP="DAUGHTER"}\:  \]
+        \item Get the difference of these employees with all the employees
+        \[ DIFF \gets EDATA - EWITHDAUGHTER \]
+        \item Remove unneeded attributes
+        \[ ANS \gets \pi _{FNAME, \: LNAME,\: SSN} - DIFF \]
+    \end{enumerate}
+
+\section{Question 4}
+
+    \textbf{Show the names (first name, last name), SSN of all employees that have salary more than 30K and the projects that they work on (the project name, the project number).}
+
+    The algebra was split into several steps.
+    
+    \begin{enumerate}
+        \item Project the first name, last name and SSN of employees with salary greater than 30K
+        \[ EDATA \gets \pi _{FNAME, \: LNAME, \: SSN} \: ( \: \sigma _{SALARY > 30000} \: (EMPLOYEE) \: ) \]
+        \item Merge the "Works on" and "Project" tables
+        \[ MERGEPROJECT \gets WORK\_ON \bowtie _{WORK\_ON.PNO = PROJECT.PNUMBER} PROJECT \]
+        \item Select the project name, number and employee SSN 
+        \[ PDATA \gets \pi _{PNAME, \: PNO, \: ESSN} \: ( \:MERGEPROJECT \:) \]
+        \item Merge PDATA with EDATA
+        \[ TEMP \gets PDATA \bowtie _{PDATA.ESSN = EDATA.SSN} EDATA \]
+        \item Select the appropriate columns
+        \[ ANS \gets \pi _{FNAME, \: LNAME, \: SSN, \: PNAME, \: PNO} \: ( \: TEMP \: ) \]
+    \end{enumerate}
+
+\section{Question 5}
+
+    \textbf{For each employee who works in department number 4 or 5, show the employee's last name, their salary and the name of the department that they work in.}
+
+    The algebra was split into several steps.
+
+
+
+\section{Question 6}
+
+    \textbf{For each project, list the name of the project and the names (first and last) of the employees that work on the project.  If the project has no employees working on it, the project name should still be included in your result.}
+
+\section{Question 7}
+
+    \textbf{List the projects (project number and name) that employees (last name)  "Franklin" and "Wagner" BOTH work on (not either or, but both Franklin and Wagner must work on the project) but that the person with the last name "Zelwinger" does not.}
+
+\section{Question 8}
+
+    \textbf{Which employees (last name, first name and ssn) make more money than their manager?}
+
+\section{Question 9}
+
+    \textbf{For each manager, show the manager's name, SSN and their projects that they work on (include the project numbers and the number of hours they work on each).}
+
+\section{Question 10}
+
+    \textbf{List the name (first name, last name) of each employee and their dependents' names.  All employees should be included, whether or not they have dependents.}
+    
 \end{document}
