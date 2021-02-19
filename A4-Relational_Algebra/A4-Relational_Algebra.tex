@@ -26,7 +26,7 @@
         \item Project all the female employees' names
         \[ FEMPLOYEE \gets \pi _{FNAME} \: ( \: \sigma \: _{(SEX = 'F')} \: (EMPLOYEE) \: )\]
         \item Project all the female dependents' names
-        \[ FDEPENDENT \gets \pi _{FNAME} \: ( \: \sigma \: _{(SEX = 'F')} \: (DEPENDENT)) \: \]
+        \[ FDEPENDENT \gets \pi _{DEPENDENT\_NAME} \: ( \: \sigma \: _{(SEX = 'F')} \: (DEPENDENT)) \: \]
         \item Combine the two tables
         \[ ALLFEMALES \gets FEMPLOYEE \cup FDEPENDENT \]
         \item Rename "FNAME" to "Name"
@@ -116,20 +116,89 @@
     The algebra was split into several steps.
 
     \begin{enumerate}
-        \item Find all employees with the last names Franklin and Wagner
-        \item Find all employees with the last name Zelwinger
+        \item Find the last name and SSN of all employees with the last name Franklin
+        \[ FRAS \gets \pi _{LNAME, \: SSN} \: ( \: \sigma _{LNAME = "Franklin"} (EMPLOYEE)) \]
+        \item Find the last name and SSN of all employees with the last name Wagner
+        \[ WAGS \gets \pi _{LNAME, \: SSN} \: ( \: \sigma _{LNAME = "Wagner" } (EMPLOYEE)) \]
+        \item Find the SSN of all employees with the last name Zelwinger
+        \[ ZELS \gets \pi _{SSN} \: ( \: \sigma _{LNAME \: = \: "Zelwinger"} (EMPLOYEE)) \]
+        \item Find all projects from the WORKS\_ON table where the ESSN field equals that of one of the Franklin SSNs
+        \[ FPROJECTS \gets WORKS\_ON \bowtie _{\: WORKS\_ON.ESSN = FRAS.SSN} FRAS \]
+        \item Find all projects from the WORKS\_ON table where the ESSN field equals that of one of the Wagner SSNs
+        \[ WPROJECTS \gets WORKS\_ON \bowtie _{\: WORKS\_ON.ESSN = WAGS.SSN} WAGS \]
+        \item Find all projects from the WORKS\_ON table where the ESSN field equals that of one of the Zelwinger SSNs
+        \[ ZPROJECTS \gets WORKS\_ON \bowtie _{\: WORKS\_ON.ESSN = ZELS.SSN} ZELS \]
+        \item Get the difference of the ZPROJECTS table from the WORKS\_ON table
+        \[ NOTZPROJECTS \gets WORKS\_ON - ZPROJECTS  \]
+        \item Find the intersection of the projects that are worked on by Franklin and Wagner and not Zelwinger. 
+        \[ ALLWORKSON \gets FPROJECTS \cap WPROJECTS \cap NOTZPROJECTS\]
+        \item Join this table with the PROJECTS table
+        \[ TEMP \gets ALLWORKSON \bowtie _{ALLWORKSON.PNO = PROJECT.PNUMBER} \: PROJECT\]
+        \item Select the project name and numbers of these projects
+        \[ ANS \gets \pi _{PNUMBER, \: PNAME} \: TEMP \]
+        
     \end{enumerate}
 
 \section{Question 8}
 
     \textbf{Which employees (last name, first name and ssn) make more money than their manager?}
+    
+    This process assumes SUPERSSN field in the EMPLOYEE table refers to the SSN of the employee's manager. The algebra was split into several steps.
+
+    \begin{enumerate}
+        \item Select only the salary and SSN of all employees.
+        \[ SUPERDATA _{SUPERSSN, \: SUPERSALARY} \gets \pi _{SSN, \: SALARY} (EMPLOYEE) \]
+        \item Combine the SUPERDATA and EMPLOYEE tables based on the SUPERSSN field. This means that for each row, the employee's manager's salary and SSN is appended
+        \[ EINFO \gets EMPLOYEE * _{SUPERSSN} \: SUPERDATA \]
+        \item Selects all employees that make more money than their employees
+        \[ RICHER \gets \sigma _{(SALARY > SUPERSALARY)} \: EINFO\]
+        \item Selects the appropriate columns
+        \[ ANS \gets \pi _{LNAME, \: FNAME, \: SSN} (RICHER) \]
+    \end{enumerate}
 
 \section{Question 9}
 
     \textbf{For each manager, show the manager's name, SSN and their projects that they work on (include the project numbers and the number of hours they work on each).}
+    
+    This process assumes that a "name" consists of a first and last name. This process assumes that a "manager" can either be a department manager or an employee who manages another. This process assumes SUPERSSN field in the EMPLOYEE table refers to the SSN of the employee's manager. This results in both the DEPARTMENT and EMPLOYEE tables being queried for managers as well. 
+    
+    The algebra was split into several steps.
+
+    \begin{enumerate}
+        \item Select the SSN of all the department managers
+        \[ DMGRS_{MGRSSN} \gets \pi _{MGRSSN} \: (DEPARTMENT) \]
+        \item Select all the manager SSNs of the employees
+        \[ OMGRS_{MGRSSN} \gets \pi _{SUPERSSN} \: (EMPLOYEE) \]
+        \item Get the union of the department managers and other managers
+        \[ ALLMGRS \gets DMGRS \cup OMGRS \]
+        \item Get manager data
+        \[ALLMGRDATA \gets ALLMGRS \bowtie _{ALLMGRS.MGRSSN=EMPLOYEE.SSN} \: EMPLOYEE \]
+        \item Find the project numbers and hours of all the projects the managers work on
+        \[ ALLDATA \gets ALLMGRDATA \times WORKS\_ON \]
+        \item Select the appropriate columns
+        \[ ANS \gets \pi _{FNAME, \: LNAME, \: SSN, \: PNO, \: HOURS} ALLDATA \]
+
+    \end{enumerate}
 
 \section{Question 10}
 
     \textbf{List the name (first name, last name) of each employee and their dependents' names.  All employees should be included, whether or not they have dependents.}
+    
+    The algebra was split into several steps.
+
+    \begin{enumerate}
+        \item Select appropriate columns for all employees
+        \[ EDATA \gets \pi _{FNAME, \: LNAME, \: SSN} \]
+        \item Get the employees with dependents
+        \[ EWITHD \gets EDATA \bowtie _{EMPLOYEE.SSN=DEPENDENT.ESSN} \: DEPENDENT \]
+        \item Select the appropriate columns
+        \[ EWITHDDATA \gets \pi _{FNAME, \: LNAME, \: DEPENDENT\_NAME} \: EWITHD \]
+        \item Select employee data of all employees with dependents
+        \[ EWITHD \gets \pi _{FNAME, \: LNAME, \: SSN} EWITHD \]
+        \item Select employees without dependents
+        \[ EWOUTD \gets EDATA - EWITHD \]
+        \item How to add empty column for no dependents.
+        \[ EWITHOUTD \gets EMPLOYEE \bowtie _{EMPLOYEE.SSN=DEPENDENT.ESSN} \: DEPENDENT \]
+    \end{enumerate}
     
 \end{document}
