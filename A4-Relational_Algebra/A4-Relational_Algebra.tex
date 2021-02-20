@@ -4,6 +4,12 @@
 \title{CMPE 332 - Assignment 4 - Relational Algebra}
 \author{Jamie Won - 20113217}
 
+\def\ojoin{\setbox0=\hbox{$\bowtie$}%
+  \rule[-.02ex]{.25em}{.4pt}\llap{\rule[\ht0]{.25em}{.4pt}}}
+\def\leftouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie}}
+\def\rightouterjoin{\mathbin{\bowtie\mkern-5.8mu\ojoin}}
+\def\fullouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie\mkern-5.8mu\ojoin}}
+
 \begin{document}
 
 \setcounter{secnumdepth}{0}
@@ -14,7 +20,7 @@
 \section{Question 1}
 
     \textbf{List the first name, last name and address of all employees who work in a department that has a number above 10}
-    \[ ANS \gets \pi _{\: FNAME, \: LNAME, \: ADDRESS} \: ( \: \sigma \: _{(DNO > 10)} \: (EMPLOYEE) \: )\]
+    \[ ANS \gets \pi \: _{\: FNAME, \: LNAME, \: ADDRESS} \: ( \: \sigma \: _{(DNO > 10)} \: (EMPLOYEE) \: )\]
 
 \section{Question 2}
 
@@ -24,13 +30,11 @@
     
     \begin{enumerate}
         \item Project all the female employees' names
-        \[ FEMPLOYEE \gets \pi _{FNAME} \: ( \: \sigma \: _{(SEX = 'F')} \: (EMPLOYEE) \: )\]
+        \[ FEMPLOYEE \: _{NAME} \gets \pi \: _{FNAME} \: ( \: \sigma \: _{(SEX = 'F')} \: (EMPLOYEE) \: )\]
         \item Project all the female dependents' names
-        \[ FDEPENDENT \gets \pi _{DEPENDENT\_NAME} \: ( \: \sigma \: _{(SEX = 'F')} \: (DEPENDENT)) \: \]
+        \[ FDEPENDENT \: _{NAME} \gets \pi \: _{DEPENDENT\_NAME} \: ( \: \sigma \: _{(SEX = 'F')} \: (DEPENDENT)) \: \]
         \item Combine the two tables
-        \[ ALLFEMALES \gets FEMPLOYEE \cup FDEPENDENT \]
-        \item Rename "FNAME" to "Name"
-        \[ ANS_{Name} \gets \pi _{FNAME} \: ( \: ALLFEMALES \:) \]
+        \[ ANS \gets FEMPLOYEE \cup FDEPENDENT \]
     \end{enumerate}
     
 \section{Question 3}
@@ -41,17 +45,15 @@
     
     \begin{enumerate}
         \item Project the first name, last name and SSN of all employees
-        \[ EDATA \gets \pi _{FNAME, \: LNAME, \: SSN} \: (EMPLOYEE)\]
-        \item Project the relationship and employee SSN of all dependents
-        \[ DDATA \gets \pi _{ESSN, \: RELATIONSHIP} \: (DEPENDENT) \]
-        \item Find all employees with dependents
-        \[ EWITHDEPENDENT \gets EDATA \bowtie _{EDATA.SSN = DDATA.ESSN} DDATA \:  \]
+        \[ EDATA \gets \pi \: _{FNAME, \: LNAME, \: SSN} \: (EMPLOYEE)\]
+        \item Project the relationship and employee SSN of all dependents that are daughters
+        \[ DDATA \gets \pi \: _{ESSN, \: RELATIONSHIP} \: ( \: \sigma \: _{(RELATIONSHIP="DAUGHTER")} \: (DEPENDENT) ) \]
         \item Find all employees with daughters
-        \[ EWITHDAUGHTER \gets EWITHDEPENDENT\: \sigma _{RELATIONSHIP="DAUGHTER"}\:  \]
-        \item Get the difference of these employees with all the employees
-        \[ DIFF \gets EDATA - EWITHDAUGHTER \]
-        \item Remove unneeded attributes
-        \[ ANS \gets \pi _{FNAME, \: LNAME,\: SSN} - DIFF \]
+        \[ EWITHDAUGHTER \gets EDATA \bowtie \: _{EDATA.SSN = DDATA.ESSN} \: DDATA \:  \]
+        \item Make it union compatible
+        \[ EWITHDAUGHTERUNION \gets \pi \: _{FNAME, \: LNAME, \: SSN} \: (EWITHDAUGHTER)\]
+        \item Get the difference of these employees with all the employees. These are the employees without a daughter
+        \[ ANS \gets EDATA - EWITHDAUGHTERUNION \]
     \end{enumerate}
 
 \section{Question 4}
@@ -62,15 +64,15 @@
     
     \begin{enumerate}
         \item Project the first name, last name and SSN of employees with salary greater than 30K
-        \[ EDATA \gets \pi _{FNAME, \: LNAME, \: SSN} \: ( \: \sigma _{SALARY > 30000} \: (EMPLOYEE) \: ) \]
+        \[ EDATA \gets \pi \: _{FNAME, \: LNAME, \: SSN} \: ( \: \sigma \: _{SALARY > 30000} \: (EMPLOYEE) \: ) \]
         \item Merge the "Works on" and "Project" tables
-        \[ MERGEPROJECT \gets WORK\_ON \bowtie _{WORK\_ON.PNO = PROJECT.PNUMBER} PROJECT \]
+        \[ MERGEPROJECT \gets WORK\_ON \bowtie \: _{WORK\_ON.PNO = PROJECT.PNUMBER} \: PROJECT \]
         \item Select the project name, number and employee SSN 
-        \[ PDATA \gets \pi _{PNAME, \: PNO, \: ESSN} \: ( \:MERGEPROJECT \:) \]
+        \[ PDATA \gets \pi \: _{PNAME, \: PNO, \: ESSN} \: ( \:MERGEPROJECT \:) \]
         \item Merge PDATA with EDATA
-        \[ TEMP \gets PDATA \bowtie _{PDATA.ESSN = EDATA.SSN} EDATA \]
+        \[ TEMP \gets PDATA \bowtie \: _{PDATA.ESSN = EDATA.SSN} \: EDATA \]
         \item Select the appropriate columns
-        \[ ANS \gets \pi _{FNAME, \: LNAME, \: SSN, \: PNAME, \: PNO} \: ( \: TEMP \: ) \]
+        \[ ANS \gets \pi \: _{FNAME, \: LNAME, \: SSN, \: PNAME, \: PNO} \: ( \: TEMP \: ) \]
     \end{enumerate}
 
 \section{Question 5}
@@ -81,16 +83,16 @@
 
     \begin{enumerate}
         \item Select the department names and department numbers of all departments that have a department number of 4 or 5
-        \[ DDATA \gets \pi _{DNAME, \: DNUMBER} \: ( \: \sigma _{DNUMBER = 4 \: or \: DNUMBER = 5 } ( \: DEPARTMENT \:)) \]
+        \[ DDATA \gets \pi \: _{DNAME, \: DNUMBER} \: ( \: \sigma \: _{DNUMBER = 4 \: or \: DNUMBER = 5 \: } ( \: DEPARTMENT \:)) \]
         \item Combine the reduced departments with all employees
-        \[ TEMP \gets DDATA \bowtie _{DDATA.DNUMBER = EMPLOYEE.DNO} EMPLOYEE \]
+        \[ TEMP \gets DDATA \bowtie \: _{DDATA.DNUMBER = EMPLOYEE.DNO} \: EMPLOYEE \]
         \item Select the appropriate columns
-        \[ ANS \gets \pi _{LNAME, \: SALARY, \: DNO, \: DNAME} (TEMP) \]
+        \[ ANS \gets \pi \: _{LNAME, \: SALARY, \: DNO, \: DNAME} \: TEMP \]
     \end{enumerate}
 
     There may be more than one person with the same last name, salary and department. That is, there is no guarantee that the last name, salary and department of an employee uniquely identifies said employee. Thus, the following statement, continuted form the above statements, has an additional attribute (SSN), but ensures that every employee in department 4 or 5 is listed with the department name.
 
-    \[ ALLANS \gets \pi _{LNAME, \: SALARY, \: DNO, \: DNAME, \: SSN} (TEMP)\]
+    \[ ALLANS \gets \pi\:  _{LNAME, \: SALARY, \: DNO, \: DNAME, \: SSN} \: TEMP\]
 
 \section{Question 6}
 
@@ -100,13 +102,15 @@
 
     \begin{enumerate}
         \item Join the Works\_On and Project tables on the project number attribute
-        \[ ALLPDATA \gets PROJECT \bowtie _{PROJECT.PNUMBER = WORKS\_ON.PNO} \: WORKS\_ON \]
+        \[ ALLPDATA \gets PROJECT \bowtie \: _{PROJECT.PNUMBER = WORKS\_ON.PNO} \: WORKS\_ON \]
         \item Select the relevant attributes
-        \[ PDATA \gets \pi _{PNAME, \: ESSN} \: ( \: ALLPDATA \: ) \]
+        \[ PDATA \: _{PNAME, \: SSN} \gets \pi \: _{PNAME, \: ESSN} \: ( \: ALLPDATA \: ) \]
         \item Get the names of employees (and their SSN)
-        \[ EDATA \gets \pi _{FNAME, \: LNAME, \: SSN} \: ( \: EMPLOYEE \: ) \]
+        \[ EDATA \gets \pi \: _{FNAME, \: LNAME, \: SSN} \: ( \: EMPLOYEE \: ) \]
         \item Combine the project data and employee data
-        \[ ANS \gets PDATA * _{(\: ESSN \:), \: ( \: SSN \: )} EDATA \]
+        \[ TEMP \gets PDATA \leftouterjoin EDATA \]
+        \item Select the approrpiate columns
+        \[ ANS \gets \pi \: _{FNAME, \: LNAME, \: PNAME} \: TEMP \]
     \end{enumerate}
 
 \section{Question 7}
@@ -116,26 +120,26 @@
     The algebra was split into several steps.
 
     \begin{enumerate}
-        \item Find the last name and SSN of all employees with the last name Franklin
-        \[ FRAS \gets \pi _{LNAME, \: SSN} \: ( \: \sigma _{LNAME = "Franklin"} (EMPLOYEE)) \]
-        \item Find the last name and SSN of all employees with the last name Wagner
-        \[ WAGS \gets \pi _{LNAME, \: SSN} \: ( \: \sigma _{LNAME = "Wagner" } (EMPLOYEE)) \]
+        \item Find the SSN of all employees with the last name Franklin
+        \[ FRAS \gets \pi \: _{SSN} \: ( \: \sigma \: _{LNAME = "Franklin"} \: (EMPLOYEE)) \]
+        \item Find the SSN of all employees with the last name Wagner
+        \[ WAGS \gets \pi \: _{SSN} \: ( \: \sigma \: _{LNAME = "Wagner" } \: (EMPLOYEE)) \]
         \item Find the SSN of all employees with the last name Zelwinger
-        \[ ZELS \gets \pi _{SSN} \: ( \: \sigma _{LNAME \: = \: "Zelwinger"} (EMPLOYEE)) \]
+        \[ ZELS \gets \pi\:  _{SSN} \: ( \: \sigma \: _{LNAME \: = \: "Zelwinger"} \: (EMPLOYEE)) \]
         \item Find all projects from the WORKS\_ON table where the ESSN field equals that of one of the Franklin SSNs
-        \[ FPROJECTS \gets WORKS\_ON \bowtie _{\: WORKS\_ON.ESSN = FRAS.SSN} FRAS \]
+        \[ FPROJECTS \gets WORKS\_ON \bowtie \: _{\: WORKS\_ON.ESSN = FRAS.SSN} \: FRAS \]
         \item Find all projects from the WORKS\_ON table where the ESSN field equals that of one of the Wagner SSNs
-        \[ WPROJECTS \gets WORKS\_ON \bowtie _{\: WORKS\_ON.ESSN = WAGS.SSN} WAGS \]
+        \[ WPROJECTS \gets WORKS\_ON \bowtie \: _{\: WORKS\_ON.ESSN = WAGS.SSN} \: WAGS \]
         \item Find all projects from the WORKS\_ON table where the ESSN field equals that of one of the Zelwinger SSNs
-        \[ ZPROJECTS \gets WORKS\_ON \bowtie _{\: WORKS\_ON.ESSN = ZELS.SSN} ZELS \]
+        \[ ZPROJECTS \gets WORKS\_ON \bowtie \: _{\: WORKS\_ON.ESSN = ZELS.SSN} \: ZELS \]
         \item Get the difference of the ZPROJECTS table from the WORKS\_ON table
         \[ NOTZPROJECTS \gets WORKS\_ON - ZPROJECTS  \]
         \item Find the intersection of the projects that are worked on by Franklin and Wagner and not Zelwinger. 
         \[ ALLWORKSON \gets FPROJECTS \cap WPROJECTS \cap NOTZPROJECTS\]
         \item Join this table with the PROJECTS table
-        \[ TEMP \gets ALLWORKSON \bowtie _{ALLWORKSON.PNO = PROJECT.PNUMBER} \: PROJECT\]
+        \[ TEMP \gets ALLWORKSON \bowtie \: _{ALLWORKSON.PNO = PROJECT.PNUMBER} \: PROJECT\]
         \item Select the project name and numbers of these projects
-        \[ ANS \gets \pi _{PNUMBER, \: PNAME} \: TEMP \]
+        \[ ANS \gets \pi \: _{PNUMBER, \: PNAME} \: TEMP \]
         
     \end{enumerate}
 
@@ -147,13 +151,13 @@
 
     \begin{enumerate}
         \item Select only the salary and SSN of all employees.
-        \[ SUPERDATA _{SUPERSSN, \: SUPERSALARY} \gets \pi _{SSN, \: SALARY} (EMPLOYEE) \]
+        \[ SUPERDATA \: _{SUPERSSN, \: SUPERSALARY} \gets \pi \: _{SSN, \: SALARY} (EMPLOYEE) \]
         \item Combine the SUPERDATA and EMPLOYEE tables based on the SUPERSSN field. This means that for each row, the employee's manager's salary and SSN is appended
         \[ EINFO \gets EMPLOYEE * _{SUPERSSN} \: SUPERDATA \]
         \item Selects all employees that make more money than their employees
-        \[ RICHER \gets \sigma _{(SALARY > SUPERSALARY)} \: EINFO\]
+        \[ RICHER \gets \sigma \: _{(SALARY > SUPERSALARY)} \: EINFO\]
         \item Selects the appropriate columns
-        \[ ANS \gets \pi _{LNAME, \: FNAME, \: SSN} (RICHER) \]
+        \[ ANS \gets \pi \: _{LNAME, \: FNAME, \: SSN} \: (RICHER) \]
     \end{enumerate}
 
 \section{Question 9}
@@ -166,17 +170,17 @@
 
     \begin{enumerate}
         \item Select the SSN of all the department managers
-        \[ DMGRS_{MGRSSN} \gets \pi _{MGRSSN} \: (DEPARTMENT) \]
+        \[ DMGRS \: _{MGRSSN} \gets \pi \: _{MGRSSN} \: (DEPARTMENT) \]
         \item Select all the manager SSNs of the employees
-        \[ OMGRS_{MGRSSN} \gets \pi _{SUPERSSN} \: (EMPLOYEE) \]
+        \[ OMGRS \: _{MGRSSN} \gets \pi \: _{SUPERSSN} \: (EMPLOYEE) \]
         \item Get the union of the department managers and other managers
         \[ ALLMGRS \gets DMGRS \cup OMGRS \]
         \item Get manager data
-        \[ALLMGRDATA \gets ALLMGRS \bowtie _{ALLMGRS.MGRSSN=EMPLOYEE.SSN} \: EMPLOYEE \]
+        \[ALLMGRDATA \gets ALLMGRS \bowtie \: _{ALLMGRS.MGRSSN=EMPLOYEE.SSN} \: EMPLOYEE \]
         \item Find the project numbers and hours of all the projects the managers work on
         \[ ALLDATA \gets ALLMGRDATA \times WORKS\_ON \]
         \item Select the appropriate columns
-        \[ ANS \gets \pi _{FNAME, \: LNAME, \: SSN, \: PNO, \: HOURS} ALLDATA \]
+        \[ ANS \gets \pi \: _{FNAME, \: LNAME, \: SSN, \: PNO, \: HOURS} \: ALLDATA \]
 
     \end{enumerate}
 
@@ -188,17 +192,23 @@
 
     \begin{enumerate}
         \item Select appropriate columns for all employees
-        \[ EDATA \gets \pi _{FNAME, \: LNAME, \: SSN} \]
-        \item Get the employees with dependents
-        \[ EWITHD \gets EDATA \bowtie _{EMPLOYEE.SSN=DEPENDENT.ESSN} \: DEPENDENT \]
+        \[ EDATA \gets \pi \: _{FNAME, \: LNAME, \: SSN} \]
+        \item Select the appropriate columns all dependents
+        \[ DDATA \: _{SSN, \: DEPENDENT\_NAME} \gets \pi \: _{ESSN, \: DEPENDENT\_NAME} \: (DEPENDENT) \]
+        \item Combine these tables
+        \[ TEMP \gets EDATA \leftouterjoin DDATA \]
         \item Select the appropriate columns
-        \[ EWITHDDATA \gets \pi _{FNAME, \: LNAME, \: DEPENDENT\_NAME} \: EWITHD \]
-        \item Select employee data of all employees with dependents
-        \[ EWITHD \gets \pi _{FNAME, \: LNAME, \: SSN} EWITHD \]
-        \item Select employees without dependents
-        \[ EWOUTD \gets EDATA - EWITHD \]
-        \item How to add empty column for no dependents.
-        \[ EWITHOUTD \gets EMPLOYEE \bowtie _{EMPLOYEE.SSN=DEPENDENT.ESSN} \: DEPENDENT \]
+        \[ ANS \gets \pi \: _{FNAME, \: LNAME, \: DEPENDENT\_NAME} \: (TEMP) \]
+        % \item Get the employees with dependents
+        % \[ EWITHD \gets EDATA \bowtie _{EMPLOYEE.SSN=DEPENDENT.ESSN} \: DEPENDENT \]
+        % \item Select the appropriate columns
+        % \[ EWITHDDATA \gets \pi _{FNAME, \: LNAME, \: DEPENDENT\_NAME} \: EWITHD \]
+        % \item Select employee data of all employees with dependents
+        % \[ EWITHD \gets \pi _{FNAME, \: LNAME, \: SSN} EWITHD \]
+        % \item Select employees without dependents
+        % \[ EWOUTD \gets EDATA - EWITHD \]
+        % \item How to add empty column for no dependents.
+        % \[ EWITHOUTD \gets EMPLOYEE \bowtie _{EMPLOYEE.SSN=DEPENDENT.ESSN} \: DEPENDENT \]
     \end{enumerate}
     
 \end{document}
