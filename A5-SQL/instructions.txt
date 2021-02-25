@@ -1,0 +1,53 @@
+Instructions
+This assignment is to give you practice using SQL.  It uses the university schema shown below. The boxes are entities (tables), the table name is at the top in the blue box, the attributes are shown in each box.  The primary key for each table is underlined.  The arrows indicate foreign key relationships.
+
+university database schema
+
+You can build this database using phpmyadmin by importing this script (or cutting and pasting the commands) which builds the database and inserts some data.
+
+Use the database that you have built and write and run the following queries.   Save your queries in a script that you will hand in.   Your queries should be general and work for any set of data, not just the data that is currently in the database.   Be sure that you check your answers by looking at the data.  Just because your query runs and produces results doesn't mean that the query is correct! 
+
+Each correct query will be allocated 2 marks. 
+
+1) Show the names of all instructors in the Comp. Sci. department who earn more than $70,000.
+
+2) List each student id along with the course ids that they take each year.
+
+3) Which time slots have classes on Mondays?  Show the output as a single column labeled MondaySlots.  Be sure to check that your results are correct!
+
+4) Make a list of student names and their course ids.  Order the results alphabetically by student name.
+
+5) For all courses with an instructor taught prior to or during 2010, show the course id, the year taught, and the name of the instructor.  (Use the teaches and instructor tables for this one).
+
+6) How many unique courses were offered in 2010?  By "unique", I mean unique course ids.   Use the section table for this query.  Call the resulting column NumCourses2010.
+
+7) Make a list of all names (instructors and students).  Your resulting table should have one column.
+
+8)  List the course ID, semester, year and title of each course offered by the Finance department.
+
+9) List the names of all students and the ID of their advisor, if they have one.  In mysql, left/right joins implement outer joins that we used in relational algebra.
+
+10) For each student who has taken a course, list their name, the name of the student's department and the name of the course that they have taken.
+
+11) Make a list containing each student's name and the number of unique courses that they have taken in each year.  Your output should have 3 columns, Student Name, Year and Number of Courses.
+
+12) Make a list of courses (course ids) that were offered in both Fall 2009 and in Spring 2010.   (This does not mean either/or, but courses that were offered in both semesters).
+
+13) Show students (just their ID is enough) who have both an A and an C among the courses that they have taken.
+
+14) For all courses that start at 8:00AM, change the time to 9:30AM.
+
+15) Delete the Comp. Sci. department.
+
+
+What to Submit
+Hand in 2 documents:
+
+1)  a script containing all of your queries.  This script should run when imported into mysql.
+
+2) a pdf document showing the queries and the output.  You can create this using the "copy to clipboard" option after your query has run in phpmyadmin.
+
+Submit the two documents separately to ONQ.  Do not zip your files.
+
+Late Policy
+Assignments may be handed in 24 hours late (no need to ask for permission) without penalty.    No further extensions will be given for any reason.  Assignments submitted beyond the 24 hour deadline will not be accepted.
