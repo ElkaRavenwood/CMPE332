@@ -1,0 +1,295 @@
+\documentclass[letterpaper]{article}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{listings}
+\definecolor{vgreen}{RGB}{104,180,104}
+\definecolor{vblue}{RGB}{49,49,255}
+\lstset{
+    language=SQL,
+    % wrap text
+    breaklines=true, 
+    % other styling
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{vblue},
+    identifierstyle=\color{black},
+    commentstyle=\color{vgreen},
+    tabsize=2
+}
+
+\title{
+    ELEC 332 Assignment 5 \\
+    \begin{large}
+        SQL
+    \end{large}
+}
+\author{Jamie Won | 20113217 | \href{mailto:jamie.won@queensu.ca}{jamie.won@queensu.ca}}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\cleardoublepage
+
+\section{Query 1}
+
+    \textbf{Show the names of all instructors in the Comp. Sci. department who earn more than \$70,000.}
+    \begin{lstlisting}
+    SELECT name FROM instructor WHERE dept_name="Comp. Sci." AND salary > 70000
+
+
+    name	
+    Katz	
+    Brandt	
+    \end{lstlisting}
+        
+\section{Query 2}
+
+    \textbf{List each student id along with the course ids that they take each year.}
+    \begin{lstlisting}
+       
+    SELECT ID, course_id FROM takes
+    
+    
+    ID	    course_id	
+    00128	CS-101	
+    00128	CS-347	
+    12345	CS-101	
+    12345	CS-190	
+    12345	CS-315	
+    12345	CS-347	
+    19991	HIS-351	
+    23121	FIN-201	
+    44553	PHY-101	
+    45678	CS-101	
+    45678	CS-101	
+    45678	CS-319	
+    54321	CS-101	
+    54321	CS-190	
+    55739	MU-199	
+    76543	CS-101	
+    76543	CS-319	
+    76653	EE-181	
+    98765	CS-101	
+    98765	CS-315	
+    98988	BIO-101	
+    98988	BIO-301	
+       
+    \end{lstlisting}
+        
+\section{Query 3}
+
+    \textbf{Which time slots have classes on Mondays?  Show the output as a single column labeled MondaySlots.  Be sure to check that your results are correct!}
+    \begin{lstlisting}
+    SELECT time_slot_id AS MondaySlots FROM time_slot WHERE day="M"
+
+
+    MondaySlots	
+    A	
+    B	
+    C	
+    D	
+    G	
+    \end{lstlisting}
+        
+\section{Query 4}
+
+    \textbf{Make a list of student names and their course ids.  Order the results alphabetically by student name.}
+    \begin{lstlisting}
+    SELECT name, course_id FROM student, takes WHERE student.ID=takes.ID ORDER BY name
+
+
+    name   	course_id	
+    Aoi	    EE-181	
+    Bourikas	CS-101	
+    Bourikas	CS-315	
+    Brandt	HIS-351	
+    Brown	CS-101	
+    Brown	CS-319	
+    Chavez	FIN-201	
+    Levy	CS-101	
+    Levy	CS-101	
+    Levy	CS-319	
+    Peltier	PHY-101	
+    Sanchez	MU-199	
+    Shankar	CS-101	
+    Shankar	CS-190	
+    Shankar	CS-315	
+    Shankar	CS-347	
+    Tanaka	BIO-101	
+    Tanaka	BIO-301	
+    Williams	CS-101	
+    Williams	CS-190	
+    Zhang	CS-101	
+    Zhang	CS-347
+    \end{lstlisting}
+        
+\section{Query 5}
+
+    \textbf{For all courses with an instructor taught prior to or during 2010, show the course id, the year taught, and the name of the instructor.  (Use the teaches and instructor tables for this one).}
+    \begin{lstlisting}
+    SELECT name, course_id, year FROM instructor, teaches WHERE year < 2011 AND teaches.ID=instructor.ID
+
+
+    name	    course_id	year	
+    Srinivasan	CS-101	2009	
+    Srinivasan	CS-315	2010	
+    Srinivasan	CS-347	2009	
+    Wu	        FIN-201	2010	
+    Mozart	    MU-199	2010	
+    Einstein	PHY-101	2009	
+    El Said	HIS-351	2010	
+    Katz	CS-101	2010	
+    Katz	CS-319	2010	
+    Crick	BIO-101	2009	
+    Crick	BIO-301	2010	
+    Brandt	CS-190	2009	
+    Brandt	CS-190	2009	
+    Brandt	CS-319	2010	
+    Kim	EE-181	2009
+    \end{lstlisting}
+        
+\section{Query 6}
+
+    \textbf{How many unique courses were offered in 2010?  By "unique", I mean unique course ids.   Use the section table for this query.  Call the resulting column NumCourses2010.}
+    \begin{lstlisting}
+    SELECT DISTINCT course_id as NumCourses2010 FROM section WHERE year=2010
+    
+    
+    NumCourses2010	
+    CS-101	
+    FIN-201	
+    MU-199	
+    BIO-301	
+    HIS-351	
+    CS-319	
+    CS-315	
+    \end{lstlisting}
+        
+\section{Query 7}
+
+    \textbf{Make a list of all names (instructors and students).  Your resulting table should have one column.}
+    \begin{lstlisting}
+    SELECT name FROM instructor UNION SELECT name FROM student
+    
+    
+    name	
+    Srinivasan	
+    Wu	
+    Mozart	
+    Einstein	
+    El Said	
+    Gold	
+    Katz	
+    Califieri	
+    Singh	
+    Crick	
+    Brandt	
+    Kim	
+    Zhang	
+    Shankar	
+    Chavez	
+    Peltier	
+    Levy	
+    Williams	
+    Sanchez	
+    Snow	
+    Brown	
+    Aoi	
+    Bourikas	
+    Tanaka	       
+    \end{lstlisting}
+        
+\section{Query 8}
+
+    \textbf{List the course ID, semester, year and title of each course offered by the Finance department.}
+    \begin{lstlisting}
+    SELECT s.course_id, semester, year, title FROM section AS s, course AS c WHERE s.course_id=c.course_id AND c.dept_name="Finance"
+    
+    
+    course_id   semester    year    title
+    FIN-201	Spring	2010	Investment Banking	
+    \end{lstlisting}
+        
+\section{Query 9}
+
+    \textbf{List the names of all students and the ID of their advisor, if they have one.  In mysql, left/right joins implement outer joins that we used in relational algebra.}
+    \begin{lstlisting}
+        
+    \end{lstlisting}
+        
+\section{Query 10}
+
+    \textbf{For each student who has taken a course, list their name, the name of the student's department and the name of the course that they have taken.}
+    \begin{lstlisting}
+    SELECT name, course.dept_name, title FROM student, takes, course WHERE student.ID=takes.ID AND takes.course_id=course.course_id
+    
+    
+    name	dept_name	title	
+    Zhang	Comp. Sci.	Intro. to Computer Science	
+    Zhang	Comp. Sci.	Database System Concepts	
+    Shankar	Comp. Sci.	Intro. to Computer Science	
+    Shankar	Comp. Sci.	Game Design	
+    Shankar	Comp. Sci.	Robotics	
+    Shankar	Comp. Sci.	Database System Concepts	
+    Brandt	History	World History	
+    Chavez	Finance	Investment Banking	
+    Peltier	Physics	Physical Principles	
+    Levy	Comp. Sci.	Intro. to Computer Science	
+    Levy	Comp. Sci.	Intro. to Computer Science	
+    Levy	Comp. Sci.	Image Processing	
+    Williams	Comp. Sci.	Intro. to Computer Science	
+    Williams	Comp. Sci.	Game Design	
+    Sanchez	Music	Music Video Production	
+    Brown	Comp. Sci.	Intro. to Computer Science	
+    Brown	Comp. Sci.	Image Processing	
+    Aoi	Elec. Eng.	Intro. to Digital Systems	
+    Bourikas	Comp. Sci.	Intro. to Computer Science	
+    Bourikas	Comp. Sci.	Robotics	
+    Tanaka	Biology	Intro. to Biology	
+    Tanaka	Biology	Genetics       
+    \end{lstlisting}
+        
+\section{Query 11}
+
+    \textbf{Make a list containing each student's name and the number of unique courses that they have taken in each year.  Your output should have 3 columns, Student Name, Year and Number of Courses.}
+    \begin{lstlisting}
+        
+    \end{lstlisting}
+        
+\section{Query 12}
+
+    \textbf{Make a list of courses (course ids) that were offered in both Fall 2009 and in Spring 2010.   (This does not mean either/or, but courses that were offered in both semesters).}
+    \begin{lstlisting}
+    SELECT course_id FROM teaches WHERE semester="Fall" and year=2009 INTERSECT SELECT course_id FROM teaches WHERE semester="Spring" and year=2010
+       
+       
+    course_id
+    CS-101
+    \end{lstlisting}
+        
+\section{Query 13}
+
+    \textbf{Show students (just their ID is enough) who have both an A and an C among the courses that they have taken.}
+    \begin{lstlisting}
+        
+    \end{lstlisting}
+        
+\section{Query 14}
+
+    \textbf{For all courses that start at 8:00AM, change the time to 9:30AM.}
+    \begin{lstlisting}
+        
+    \end{lstlisting}
+        
+\section{Query 15}
+
+    \textbf{Delete the Comp. Sci. department.}
+    \begin{lstlisting}
+        
+    \end{lstlisting}
+
+
+\end{document}
