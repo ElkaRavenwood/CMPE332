@@ -30,11 +30,9 @@ SELECT name FROM instructor UNION SELECT name FROM student;
 
 SELECT s.course_id, semester, year, title FROM section AS s, course AS c WHERE s.course_id=c.course_id AND c.dept_name="Finance";
 
--- 9) List the names of all students and the ID of their advisor, if they have one.  In mysql, left/right joins implement outer joins that we used in relational algebra. *****
+-- 9) List the names of all students and the ID of their advisor, if they have one.  In mysql, left/right joins implement outer joins that we used in relational algebra.
 
--- UNSURE
-
-SELECT name, i_ID FROM student, advisor where ID=s_id;
+SELECT name, i_ID FROM student LEFT JOIN advisor on student.ID=advisor.s_id;
 
 -- 10) For each student who has taken a course, list their name, the name of the student's department and the name of the course that they have taken.
 
@@ -42,21 +40,25 @@ SELECT name, course.dept_name, title FROM student, takes, course WHERE student.I
 
 -- 11) Make a list containing each student's name and the number of unique courses that they have taken in each year.  Your output should have 3 columns, Student Name, Year and Number of Courses. *****
 
--- Check COUNT
+-- WRONG
 
--- SELECT name as "Student Name", year as "Year", COUNT(DISTINCT year, course_id, student.ID) as "Number of Courses" FROM takes, student WHERE student.ID=takes.ID;
-SELECT name as "Student Name", year as "Year", COUNT(DISTINCT year, course_id) as "Number of Courses" FROM takes, student WHERE student.ID=takes.ID;
+-- Check COUNT
+SELECT name as "Student Name", year as "Year", COUNT(DISTINCT year, course_id, student.ID) as "Number of Courses" FROM takes, student WHERE student.ID=takes.ID;
+SELECT name as "Student Name", year as "Year", course_id FROM takes, student WHERE student.ID=takes.ID; -- names, years courses
+SELECT COUNT(DISTINCT course_id, takes.ID, year) FROM TAKES WHERE takes.ID=takes.ID; -- all distinct courses per year per student
 
 -- 12) Make a list of courses (course ids) that were offered in both Fall 2009 and in Spring 2010.   (This does not mean either/or, but courses that were offered in both semesters).
 
--- Not sure about this one either
-
 SELECT course_id FROM teaches WHERE semester="Fall" and year=2009 INTERSECT SELECT course_id FROM teaches WHERE semester="Spring" and year=2010;
 
--- 13) Show students (just their ID is enough) who have both an A and an C among the courses that they have taken. *****
+-- 13) Show students (just their ID is enough) who have both an A and an C among the courses that they have taken.
 
-SELECT ID FROM takes WHERE
+SELECT ID FROM takes WHERE grade="A" INTERSECT SELECT ID FROM takes WHERE grade="C";
 
--- 14) For all courses that start at 8:00AM, change the time to 9:30AM. *****
+-- 14) For all courses that start at 8:00AM, change the time to 9:30AM.
 
--- 15) Delete the Comp. Sci. department.*****
+UPDATE time_slot SET start_time="9:30" WHERE start_time="8:00";
+
+-- 15) Delete the Comp. Sci. department.
+
+DELETE FROM department WHERE dept_name="Comp. Sci.";

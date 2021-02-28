@@ -101,29 +101,29 @@
     SELECT name, course_id FROM student, takes WHERE student.ID=takes.ID ORDER BY name
 
 
-    name   	course_id	
-    Aoi	    EE-181	
+    name   	    course_id	
+    Aoi	        EE-181	
     Bourikas	CS-101	
     Bourikas	CS-315	
-    Brandt	HIS-351	
-    Brown	CS-101	
-    Brown	CS-319	
-    Chavez	FIN-201	
-    Levy	CS-101	
-    Levy	CS-101	
-    Levy	CS-319	
-    Peltier	PHY-101	
-    Sanchez	MU-199	
-    Shankar	CS-101	
-    Shankar	CS-190	
-    Shankar	CS-315	
-    Shankar	CS-347	
-    Tanaka	BIO-101	
-    Tanaka	BIO-301	
+    Brandt      HIS-351	
+    Brown       CS-101	
+    Brown       CS-319	
+    Chavez      FIN-201	
+    Levy        CS-101	
+    Levy        CS-101	
+    Levy        CS-319	
+    Peltier     PHY-101	
+    Sanchez     MU-199	
+    Shankar     CS-101	
+    Shankar     CS-190	
+    Shankar     CS-315	
+    Shankar     CS-347	
+    Tanaka      BIO-101	
+    Tanaka      BIO-301	
     Williams	CS-101	
     Williams	CS-190	
-    Zhang	CS-101	
-    Zhang	CS-347
+    Zhang       CS-101	
+    Zhang       CS-347
     \end{lstlisting}
         
 \section{Query 5}
@@ -134,21 +134,21 @@
 
 
     name	    course_id	year	
-    Srinivasan	CS-101	2009	
-    Srinivasan	CS-315	2010	
-    Srinivasan	CS-347	2009	
-    Wu	        FIN-201	2010	
-    Mozart	    MU-199	2010	
-    Einstein	PHY-101	2009	
-    El Said	HIS-351	2010	
-    Katz	CS-101	2010	
-    Katz	CS-319	2010	
-    Crick	BIO-101	2009	
-    Crick	BIO-301	2010	
-    Brandt	CS-190	2009	
-    Brandt	CS-190	2009	
-    Brandt	CS-319	2010	
-    Kim	EE-181	2009
+    Srinivasan	CS-101   	2009	
+    Srinivasan	CS-315   	2010	
+    Srinivasan	CS-347   	2009	
+    Wu	        FIN-201  	2010	
+    Mozart	    MU-199   	2010	
+    Einstein	PHY-101    	2009	
+    El Said 	HIS-351	    2010
+    Katz    	CS-101	    2010
+    Katz    	CS-319	    2010
+    Crick   	BIO-101	    2009
+    Crick   	BIO-301	    2010
+    Brandt  	CS-190	    2009
+    Brandt  	CS-190	    2009
+    Brandt  	CS-319	    2010
+    Kim	        EE-181	    2009
     \end{lstlisting}
         
 \section{Query 6}
@@ -210,14 +210,30 @@
     
     
     course_id   semester    year    title
-    FIN-201	Spring	2010	Investment Banking	
+    FIN-201	    Spring	    2010	Investment Banking	
     \end{lstlisting}
         
 \section{Query 9}
 
     \textbf{List the names of all students and the ID of their advisor, if they have one.  In mysql, left/right joins implement outer joins that we used in relational algebra.}
     \begin{lstlisting}
-        
+    SELECT name, i_ID FROM student LEFT JOIN advisor on student.ID=advisor.s_id
+    
+    
+    name    	i_ID	
+    Zhang   	45565	
+    Shankar 	10101	
+    Brandt  	NULL
+    Chavez  	76543	
+    Peltier 	22222	
+    Levy    	22222	
+    Williams    NULL
+    Sanchez 	NULL
+    Snow    	NULL
+    Brown   	45565	
+    Aoi 	    98345	
+    Bourikas    98345	
+    Tanaka  	76766
     \end{lstlisting}
         
 \section{Query 10}
@@ -227,29 +243,29 @@
     SELECT name, course.dept_name, title FROM student, takes, course WHERE student.ID=takes.ID AND takes.course_id=course.course_id
     
     
-    name	dept_name	title	
-    Zhang	Comp. Sci.	Intro. to Computer Science	
-    Zhang	Comp. Sci.	Database System Concepts	
-    Shankar	Comp. Sci.	Intro. to Computer Science	
-    Shankar	Comp. Sci.	Game Design	
-    Shankar	Comp. Sci.	Robotics	
-    Shankar	Comp. Sci.	Database System Concepts	
-    Brandt	History	World History	
-    Chavez	Finance	Investment Banking	
-    Peltier	Physics	Physical Principles	
-    Levy	Comp. Sci.	Intro. to Computer Science	
-    Levy	Comp. Sci.	Intro. to Computer Science	
-    Levy	Comp. Sci.	Image Processing	
+    name    	dept_name	title	
+    Zhang	    Comp. Sci.	Intro. to Computer Science	
+    Zhang   	Comp. Sci.	Database System Concepts	
+    Shankar 	Comp. Sci.	Intro. to Computer Science	
+    Shankar 	Comp. Sci.	Game Design	
+    Shankar 	Comp. Sci.	Robotics	
+    Shankar 	Comp. Sci.	Database System Concepts	
+    Brandt  	History	    World History	
+    Chavez  	Finance	    Investment Banking	
+    Peltier 	Physics	    Physical Principles	
+    Levy    	Comp. Sci.	Intro. to Computer Science	
+    Levy    	Comp. Sci.	Intro. to Computer Science	
+    Levy    	Comp. Sci.	Image Processing	
     Williams	Comp. Sci.	Intro. to Computer Science	
     Williams	Comp. Sci.	Game Design	
-    Sanchez	Music	Music Video Production	
-    Brown	Comp. Sci.	Intro. to Computer Science	
-    Brown	Comp. Sci.	Image Processing	
-    Aoi	Elec. Eng.	Intro. to Digital Systems	
-    Bourikas	Comp. Sci.	Intro. to Computer Science	
-    Bourikas	Comp. Sci.	Robotics	
-    Tanaka	Biology	Intro. to Biology	
-    Tanaka	Biology	Genetics       
+    Sanchez 	Music	    Music Video Production	
+    Brown   	Comp. Sci.	Intro. to Computer Science	
+    Brown   	Comp. Sci.	Image Processing	
+    Aoi 	    Elec. Eng.	Intro. to Digital Systems	
+    Bourikas    Comp. Sci.	Intro. to Computer Science	
+    Bourikas    Comp. Sci.	Robotics	
+    Tanaka  	Biology	    Intro. to Biology	
+    Tanaka  	Biology	    Genetics       
     \end{lstlisting}
         
 \section{Query 11}
@@ -274,22 +290,201 @@
 
     \textbf{Show students (just their ID is enough) who have both an A and an C among the courses that they have taken.}
     \begin{lstlisting}
-        
+    SELECT ID FROM takes WHERE grade="A" INTERSECT SELECT ID FROM takes WHERE grade="C"
+
+
+    ID
+    12345
     \end{lstlisting}
         
 \section{Query 14}
 
-    \textbf{For all courses that start at 8:00AM, change the time to 9:30AM.}
+    \textbf{For all courses that start at 8:00AM, change the time to 9:30AM.} \\
+    As a table update has no output, to show this query's success, three things will be shown:
+    \begin{enumerate}
+        \item The SQL query
+        \item The courses that initially start at 8:00AM and 9:30AM
+        \item The courses that start at 8:00AM and 9:30AM after altering the table
+    \end{enumerate}
+    The SQL query is below:
     \begin{lstlisting}
-        
+    UPDATE time_slot SET start_time="9:30" WHERE start_time="8:00";
+    \end{lstlisting}
+    The courses that initially start at 8:00AM and 9:30AM are listed below
+    \begin{lstlisting}
+    SELECT course_id, sec_id, semester, year, start_time FROM section,time_slot WHERE start_time="8:00" OR start_time="9:30"
+       
+       
+    course_id	sec_id	semester	year	start_time	
+    CS-101  	1	    Fall	    2009	08:00:00	
+    CS-101  	1	    Spring	    2010	08:00:00	
+    FIN-201 	1	    Spring	    2010	08:00:00	
+    MU-199  	1	    Spring	    2010	08:00:00	
+    BIO-101 	1	    Summer	    2009	08:00:00	
+    BIO-301 	1	    Summer	    2010	08:00:00	
+    HIS-351 	1	    Spring	    2010	08:00:00	
+    CS-190  	1	    Spring	    2009	08:00:00	
+    CS-190  	2	    Spring	    2009	08:00:00	
+    CS-319  	2	    Spring	    2010	08:00:00	
+    CS-347  	1	    Fall  	    2009	08:00:00	
+    EE-181  	1	    Spring    	2009	08:00:00	
+    CS-319  	1	    Spring    	2010	08:00:00	
+    PHY-101 	1	    Fall  	    2009	08:00:00	
+    CS-315  	1	    Spring    	2010	08:00:00	
+    CS-101  	1	    Fall  	    2009	08:00:00	
+    CS-101  	1	    Spring    	2010	08:00:00	
+    FIN-201 	1	    Spring    	2010	08:00:00	
+    MU-199  	1	    Spring    	2010	08:00:00	
+    BIO-101 	1	    Summer    	2009	08:00:00	
+    BIO-301 	1  	    Summer      2010	08:00:00	
+    HIS-351 	1  	    Spring      2010	08:00:00	
+    CS-190  	1  	    Spring      2009	08:00:00	
+    CS-190  	2  	    Spring      2009	08:00:00	
+    CS-319  	2  	    Spring      2010	08:00:00	
+    CS-347  	1  	    Fall        2009	08:00:00	
+    EE-181  	1  	    Spring      2009	08:00:00	
+    CS-319  	1  	    Spring      2010	08:00:00	
+    PHY-101 	1  	    Fall        2009	08:00:00	
+    CS-315  	1  	    Spring      2010	08:00:00	
+    CS-101  	1       Fall    	2009	08:00:00	
+    CS-101  	1       Spring  	2010	08:00:00	
+    FIN-201 	1       Spring  	2010	08:00:00	
+    MU-199  	1       Spring  	2010	08:00:00	
+    BIO-101 	1       Summer  	2009	08:00:00	
+    BIO-301 	1       Summer  	2010	08:00:00	
+    HIS-351 	1       Spring  	2010	08:00:00	
+    CS-190  	1       Spring  	2009	08:00:00	
+    CS-190  	2       Spring  	2009	08:00:00	
+    CS-319  	2       Spring  	2010	08:00:00	
+    CS-347  	1      	Fall	    2009	08:00:00	
+    EE-181  	1      	Spring	    2009	08:00:00	
+    CS-319  	1      	Spring	    2010	08:00:00	
+    PHY-101 	1      	Fall	    2009	08:00:00	
+    CS-315  	1      	Spring	    2010	08:00:00
+    \end{lstlisting}
+    The courses that start at 8:00AM and 9:30AM after altering the table are below:
+    \begin{lstlisting}
+    SELECT course_id, sec_id, semester, year, start_time FROM section,time_slot WHERE start_time="8:00" OR start_time="9:30"
+    
+    
+    course_id	sec_id	semester	year	start_time	
+    CS-101  	1	    Fall 	    2009	09:30:00	
+    CS-101  	1	    Spring   	2010	09:30:00	
+    FIN-201 	1	    Spring   	2010	09:30:00	
+    MU-199  	1	    Spring   	2010	09:30:00	
+    BIO-101 	1	    Summer   	2009	09:30:00	
+    BIO-301 	1	    Summer   	2010	09:30:00	
+    HIS-351 	1	    Spring   	2010	09:30:00	
+    CS-190  	1	    Spring   	2009	09:30:00	
+    CS-190  	2	    Spring   	2009	09:30:00	
+    CS-319  	2	    Spring   	2010	09:30:00	
+    CS-347  	1	    Fall 	    2009	09:30:00	
+    EE-181  	1	    Spring   	2009	09:30:00	
+    CS-319  	1	    Spring   	2010	09:30:00	
+    PHY-101 	1	    Fall 	    2009	09:30:00	
+    CS-315  	1	    Spring   	2010	09:30:00	
+    CS-101  	1	    Fall 	    2009	09:30:00	
+    CS-101  	1	    Spring   	2010	09:30:00	
+    FIN-201 	1	    Spring   	2010	09:30:00	
+    MU-199  	1	    Spring   	2010	09:30:00	
+    BIO-101 	1	    Summer   	2009	09:30:00	
+    BIO-301 	1	    Summer   	2010	09:30:00	
+    HIS-351 	1	    Spring   	2010	09:30:00	
+    CS-190  	1	    Spring   	2009	09:30:00	
+    CS-190  	2	    Spring   	2009	09:30:00	
+    CS-319  	2	    Spring   	2010	09:30:00	
+    CS-347  	1	    Fall 	    2009	09:30:00	
+    EE-181  	1	    Spring   	2009	09:30:00	
+    CS-319  	1	    Spring   	2010	09:30:00	
+    PHY-101 	1	    Fall 	    2009	09:30:00	
+    CS-315  	1	    Spring   	2010	09:30:00	
+    CS-101  	1	    Fall 	    2009	09:30:00	
+    CS-101  	1	    Spring   	2010	09:30:00	
+    FIN-201 	1	    Spring   	2010	09:30:00	
+    MU-199  	1	    Spring   	2010	09:30:00	
+    BIO-101 	1	    Summer   	2009	09:30:00	
+    BIO-301 	1	    Summer   	2010	09:30:00	
+    HIS-351 	1	    Spring   	2010	09:30:00	
+    CS-190  	1	    Spring   	2009	09:30:00	
+    CS-190  	2	    Spring   	2009	09:30:00	
+    CS-319  	2	    Spring   	2010	09:30:00	
+    CS-347  	1      	Fall	    2009	09:30:00	
+    EE-181  	1      	Spring	    2009	09:30:00	
+    CS-319  	1      	Spring	    2010	09:30:00	
+    PHY-101 	1      	Fall	    2009	09:30:00	
+    CS-315  	1      	Spring	    2010	09:30:00       
     \end{lstlisting}
         
 \section{Query 15}
 
     \textbf{Delete the Comp. Sci. department.}
+    As a table delete has no output, to show this query's success, five things will be shown:
+    \begin{enumerate}
+        \item The SQL query
+        \item The initial departments
+        \item The initial courses
+        \item The departments after altering the table
+        \item The courses after altering the table
+    \end{enumerate}
+    The reason that the courses are not also deleted, but rather, their department is set to null, is because the university may offer this course again in the future but in a different department. At Queen's, we saw this with APSC 143 becoming MNTC 313 from Winter 2020 to Summer 2020.
+    The SQL query is below:
     \begin{lstlisting}
-        
+    DELETE FROM department WHERE dept_name="Comp. Sci.";
     \end{lstlisting}
-
+    The initial departments are below
+    \begin{lstlisting}
+    dept_name	building	budget	
+    Biology	    Watson	    90000.00
+    Comp. Sci.	Taylor	    100000.00	
+    Elec. Eng.	Taylor	    85000.00
+    Finance	    Painter	    120000.00
+    History	    Painter	    50000.00
+    Music	    Packard	    80000.00
+    Physics	    Watson	    70000.00
+    \end{lstlisting}
+    The initial courses are below
+    \begin{lstlisting}
+    course_id	title	                    dept_name	  credits	
+    BIO-101	    Intro. to Biology	        Biology	      4
+    BIO-301	    Genetics	                Biology	      4
+    BIO-399	    Computational Biology	    Biology       3
+    CS-101	    Intro. to Computer Science	Comp. Sci.	  4
+    CS-190	    Game Design	                Comp. Sci.    4
+    CS-315	    Robotics	                Comp. Sci.    3
+    CS-319	    Image Processing	        Comp. Sci.    3
+    CS-347	    Database System Concepts	Comp. Sci.    3
+    EE-181	    Intro. to Digital Systems	Elec. Eng.    3
+    FIN-201	    Investment Banking	        Finance	      3
+    HIS-351	    World History	            History	      3
+    MU-199	    Music Video Production	    Music	      3
+    PHY-101	    Physical Principles	        Physics	      4
+    \end{lstlisting}
+    The department list after running the query is below:
+    \begin{lstlisting}
+    dept_name	building	budget	
+    Biology	    Watson	    90000.00
+    Elec. Eng.	Taylor	    85000.00
+    Finance	    Painter     120000.00
+    History	    Painter     50000.00
+    Music	    Packard     80000.00
+    Physics	    Watson	    70000.00
+    \end{lstlisting}
+    The course list after running the query is below:
+    \begin{lstlisting}
+    course_id	title	                    dept_name	credits	
+    BIO-101	    Intro. to Biology	        Biology	    4
+    BIO-301	    Genetics	                Biology	    4
+    BIO-399	    Computational Biology	    Biology	    3
+    CS-101	    Intro. to Computer Science  NULL        4	
+    CS-190	    Game Design                 NULL        4	
+    CS-315	    Robotics                    NULL        3	
+    CS-319	    Image Processing            NULL        3	
+    CS-347	    Database System Concepts    NULL        3
+    EE-181	    Intro. to Digital Systems	Elec. Eng.	3	
+    FIN-201	    Investment Banking	        Finance	    3
+    HIS-351	    World History	            History	    3
+    MU-199	    Music Video Production	    Music	    3
+    PHY-101	    Physical Principles	        Physics	    4      
+    \end{lstlisting}
 
 \end{document}
