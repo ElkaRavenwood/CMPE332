@@ -28,9 +28,9 @@ SELECT name FROM instructor UNION SELECT name FROM student;
 
 -- 8)  List the course ID, semester, year and title of each course offered by the Finance department.
 
-SELECT course_id, semester, year, title FROM section AS s, course AS c WHERE s.course_id=c.course_id AND c.dept_name="Finance";
+SELECT s.course_id, semester, year, title FROM section AS s, course AS c WHERE s.course_id=c.course_id AND c.dept_name="Finance";
 
--- 9) List the names of all students and the ID of their advisor, if they have one.  In mysql, left/right joins implement outer joins that we used in relational algebra.
+-- 9) List the names of all students and the ID of their advisor, if they have one.  In mysql, left/right joins implement outer joins that we used in relational algebra. *****
 
 -- UNSURE
 
@@ -38,9 +38,9 @@ SELECT name, i_ID FROM student, advisor where ID=s_id;
 
 -- 10) For each student who has taken a course, list their name, the name of the student's department and the name of the course that they have taken.
 
-SELECT name, dept_name, title FROM student, takes, course WHERE student.ID=takes.ID AND takes.course_id=course.course_id;
+SELECT name, course.dept_name, title FROM student, takes, course WHERE student.ID=takes.ID AND takes.course_id=course.course_id;
 
--- 11) Make a list containing each student's name and the number of unique courses that they have taken in each year.  Your output should have 3 columns, Student Name, Year and Number of Courses.
+-- 11) Make a list containing each student's name and the number of unique courses that they have taken in each year.  Your output should have 3 columns, Student Name, Year and Number of Courses. *****
 
 -- Check COUNT
 
@@ -53,10 +53,10 @@ SELECT name as "Student Name", year as "Year", COUNT(DISTINCT year, course_id) a
 
 SELECT course_id FROM teaches WHERE semester="Fall" and year=2009 INTERSECT SELECT course_id FROM teaches WHERE semester="Spring" and year=2010;
 
--- 13) Show students (just their ID is enough) who have both an A and an C among the courses that they have taken.
+-- 13) Show students (just their ID is enough) who have both an A and an C among the courses that they have taken. *****
 
 SELECT ID FROM takes WHERE
 
--- 14) For all courses that start at 8:00AM, change the time to 9:30AM.
+-- 14) For all courses that start at 8:00AM, change the time to 9:30AM. *****
 
--- 15) Delete the Comp. Sci. department.
+-- 15) Delete the Comp. Sci. department.*****
