@@ -272,7 +272,27 @@
 
     \textbf{Make a list containing each student's name and the number of unique courses that they have taken in each year.  Your output should have 3 columns, Student Name, Year and Number of Courses.}
     \begin{lstlisting}
-        
+    SELECT student.name as "Student Name", takes.year as "Year", COUNT(*) as "Number of Courses" FROM student, takes WHERE student.id = takes.id GROUP BY student.id, takes.year
+    
+    
+    Student Name	Year	Number of Courses	
+    Zhang	        2009	2	
+    Shankar	        2009	3	
+    Shankar	        2010	1	
+    Brandt	        2010	1	
+    Chavez	        2010	1	
+    Peltier	        2009	1	
+    Levy	        2009	1	
+    Levy	        2010	2	
+    Williams	    2009	2	
+    Sanchez	        2010	1	
+    Brown	        2009	1	
+    Brown	        2010	1	
+    Aoi	            2009	1	
+    Bourikas        2009	1	
+    Bourikas    	2010	1	
+    Tanaka	        2009	1	
+    Tanaka	        2010	1
     \end{lstlisting}
         
 \section{Query 12}

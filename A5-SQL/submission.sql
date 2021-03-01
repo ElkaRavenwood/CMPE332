@@ -38,14 +38,9 @@ SELECT name, i_ID FROM student LEFT JOIN advisor on student.ID=advisor.s_id;
 
 SELECT name, course.dept_name, title FROM student, takes, course WHERE student.ID=takes.ID AND takes.course_id=course.course_id;
 
--- 11) Make a list containing each student's name and the number of unique courses that they have taken in each year.  Your output should have 3 columns, Student Name, Year and Number of Courses. *****
+-- 11) Make a list containing each student's name and the number of unique courses that they have taken in each year.  Your output should have 3 columns, Student Name, Year and Number of Courses.
 
--- WRONG
-
--- Check COUNT
-SELECT name as "Student Name", year as "Year", COUNT(DISTINCT year, course_id, student.ID) as "Number of Courses" FROM takes, student WHERE student.ID=takes.ID;
-SELECT name as "Student Name", year as "Year", course_id FROM takes, student WHERE student.ID=takes.ID; -- names, years courses
-SELECT COUNT(DISTINCT course_id, takes.ID, year) FROM TAKES WHERE takes.ID=takes.ID; -- all distinct courses per year per student
+SELECT student.name as "Student Name", takes.year as "Year", COUNT(*) as "Number of Courses" FROM student, takes WHERE student.id = takes.id GROUP BY student.id, takes.year;
 
 -- 12) Make a list of courses (course ids) that were offered in both Fall 2009 and in Spring 2010.   (This does not mean either/or, but courses that were offered in both semesters).
 
