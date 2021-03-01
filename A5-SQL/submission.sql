@@ -20,7 +20,7 @@ SELECT name, course_id, year FROM instructor, teaches WHERE year < 2011 AND teac
 
 -- 6) How many unique courses were offered in 2010?  By "unique", I mean unique course ids.   Use the section table for this query.  Call the resulting column NumCourses2010.
 
-SELECT DISTINCT course_id as NumCourses2010 FROM section WHERE year=2010;
+SELECT DISTINCT course_id AS NumCourses2010 FROM section WHERE year=2010;
 
 -- 7) Make a list of all names (instructors and students).  Your resulting table should have one column.
 
@@ -32,7 +32,7 @@ SELECT s.course_id, semester, year, title FROM section AS s, course AS c WHERE s
 
 -- 9) List the names of all students and the ID of their advisor, if they have one.  In mysql, left/right joins implement outer joins that we used in relational algebra.
 
-SELECT name, i_ID FROM student LEFT JOIN advisor on student.ID=advisor.s_id;
+SELECT name, i_ID FROM student LEFT JOIN advisor ON student.ID=advisor.s_id;
 
 -- 10) For each student who has taken a course, list their name, the name of the student's department and the name of the course that they have taken.
 
@@ -40,11 +40,11 @@ SELECT name, course.dept_name, title FROM student, takes, course WHERE student.I
 
 -- 11) Make a list containing each student's name and the number of unique courses that they have taken in each year.  Your output should have 3 columns, Student Name, Year and Number of Courses.
 
-SELECT student.name as "Student Name", takes.year as "Year", COUNT(*) as "Number of Courses" FROM student, takes WHERE student.id = takes.id GROUP BY student.id, takes.year;
+SELECT student.name AS "Student Name", takes.year AS "Year", COUNT(DISTINCT course_id) AS "Number of Courses" FROM student, takes WHERE student.id = takes.id GROUP BY student.id, takes.year;
 
 -- 12) Make a list of courses (course ids) that were offered in both Fall 2009 and in Spring 2010.   (This does not mean either/or, but courses that were offered in both semesters).
 
-SELECT course_id FROM teaches WHERE semester="Fall" and year=2009 INTERSECT SELECT course_id FROM teaches WHERE semester="Spring" and year=2010;
+SELECT course_id FROM teaches WHERE semester="Fall" AND year=2009 INTERSECT SELECT course_id FROM teaches WHERE semester="Spring" AND year=2010;
 
 -- 13) Show students (just their ID is enough) who have both an A and an C among the courses that they have taken.
 
