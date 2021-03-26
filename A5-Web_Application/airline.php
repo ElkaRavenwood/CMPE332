@@ -33,26 +33,32 @@
                 <th>Actual Arrival Time</th>
             </tr>
             <?php
-            $result = $connection->query("SELECT * from flight, arrivesAt WHERE flight.AirlineCode=arrivesAt.AirlineCode AND flight.ThreeDigitNumber=arrivesAt.ThreeDigitNumber" );
-            // TODO action if empty search result
-            while ($row = $result->fetch()) {
-                echo "<tr>";
-                echo "<td>".$row["AirlineCode"]."</td>";
-                echo "<td>".$row["ThreeDigitNumber"]."</td>";
-                echo "<td>".$row["ScheduledArrivalTime"]."</td>";
-                // Note since the scheduled arrival time is supposed to be equal to the actual arrival time, the former is shown twice
-                /*
-                if(empty($row["ActualArrivalTime"])) {
-                    echo "<td> Did not Arrive </td>";
-                } else {
-                    echo "<td>".$row["ActualArrivalTime"]."</td>";
+                $result = $connection->query("SELECT * from flight, arrivesAt WHERE flight.AirlineCode=arrivesAt.AirlineCode AND flight.ThreeDigitNumber=arrivesAt.ThreeDigitNumber" );
+                $flightCount = 0;
+                while ($row = $result->fetch()) {
+                    echo "<tr>";
+                    echo "<td>".$row["AirlineCode"]."</td>";
+                    echo "<td>".$row["ThreeDigitNumber"]."</td>";
+                    echo "<td>".$row["ScheduledArrivalTime"]."</td>";
+                    // Note since the scheduled arrival time is supposed to be equal to the actual arrival time, the former is shown twice
+                    /*
+                    if(empty($row["ActualArrivalTime"])) {
+                        echo "<td> Did not Arrive </td>";
+                    } else {
+                        echo "<td>".$row["ActualArrivalTime"]."</td>";
+                    }
+                    */
+                    echo "<td>".$row["ScheduledArrivalTime"]."</td>";
+                    echo "</tr>";
+                    $flightCount ++;
                 }
-                */
-                echo "<td>".$row["ScheduledArrivalTime"]."</td>";
-                echo "</tr>";
-            }
+
+                echo "</table>";
+                if ($flightCount == 0) {
+                    echo "<h4>No flights available.</h4>";
+                }
             ?>
-        </table>
+        
         
     </div>
 </body>

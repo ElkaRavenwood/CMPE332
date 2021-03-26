@@ -49,7 +49,7 @@ DELIMITER ;
 CREATE TABLE DayOffered (
     AirlineCode char(2) NOT NULL,
     ThreeDigitNumber char(3) NOT NULL, 
-    DayValue varchar(8), -- The maximum number of letters a day can have (in English) is 8 - Thursday
+    DayValue varchar(9), -- The maximum number of letters a day can have (in English) is 9 - Wednesday
     PRIMARY KEY (AirlineCode, ThreeDigitNumber, DayValue),
     FOREIGN KEY (AirlineCode, ThreeDigitNumber) REFERENCES Flight (AirlineCode, ThreeDigitNumber) ON DELETE CASCADE
 );

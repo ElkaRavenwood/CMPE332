@@ -29,9 +29,80 @@
     <div class="main_container">
         <div id="header"></div>
         <div class="page_name"> Search Flights </div>
+        <h4>
+            <?php
+            if (empty($_GET["airline_code"]) || strlen($_GET["airline_code"]) != 2) {
+                echo "Please enter a valid airline code";
+            } else {
+                $code = $_GET['airline_code'];
+                $day = $_GET["days"];
+                // $result = $connection->query("SELECT Flight.AirlineCode as AirlineCode, Flight.ThreeDigitNumber as ThreeDigitNumber FROM Flight JOIN DayOffered ON Flight.AirlineCode=DayOffered.AirlineCode WHERE Flight.AirlineCode='$code' AND DayValue='$day' ");
+                $result = $connection->query(<<<EOD
+                SELECT
+                    Flight.AirlineCode AS AirlineCode,
+                    Flight.ThreeDigitNumber AS ThreeDigitNumber,
+                    ArrivalAirport.City AS ArrivalCity,
+                    DepartureAirport.City AS DepartureCity,
+                    DayValue
+                FROM
+                    Flight
+                JOIN DepartsFrom ON Flight.AirlineCode = DepartsFrom.AirlineCode AND Flight.ThreeDigitNumber = DepartsFrom.ThreeDigitNumber
+                JOIN ArrivesAt ON Flight.AirlineCode = ArrivesAt.AirlineCode AND Flight.ThreeDigitNumber = ArrivesAt.ThreeDigitNumber
+                JOIN Airport AS DepartureAirport
+                ON
+                    DepartsFrom.AirportCode = DepartureAirport.AirportCode
+                JOIN Airport AS ArrivalAirport
+                ON
+                    ArrivesAt.AirportCode = ArrivalAirport.AirportCode
+                JOIN DayOffered 
+                ON 
+                    Flight.AirlineCode = DayOffered.AirlineCode AND Flight.ThreeDigitNumber = DayOffered.ThreeDigitNumber
+                WHERE DayOffered.DayValue="$day" AND Flight.AirlineCode="$code"
+            EOD);
+                $result_fetched = $result->fetch();
+                if (empty($result_fetched)) {
+                    echo "No results found. Are you sure '$code' and '$day' are the correct airline code and day you are looking for?";
+                } else {
+                    echo "<table id='data'>
+                                <tr>
+                                <th>Airline</th>
+                                <th>Flight Code</th>
+                                <th>Departing Airport Location</th>
+                                <th>Arriving Airport Location</th>
+                            </tr>";
+                    echo "<tr>";
+                    echo "<td>" . $result_fetched["AirlineCode"] . "</td>";
+                    echo "<td>". $result_fetched["ThreeDigitNumber"]."</td>";
+                    echo "<td>". $result_fetched["DepartureCity"]."</td>";
+                    echo "<td>". $result_fetched["ArrivalCity"]."</td>";
+                    echo "</tr>";
+                    while ($row = $result->fetch()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["AirlineCode"] . "</td>";
+                        echo "<td>". $row["ThreeDigitNumber"]."</td>";
+                        echo "<td>". $row["DepartureCity"]."</td>";
+                        echo "<td>". $row["ArrivalCity"]."</td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                }
+            }
+            ?>
+        </h4>
         <form action="/search_flights.php" class="search_airline" id="search_airline">
             <label for="search" class="search-descriptors">Enter an airline code:</label>
-            <input id="search" class="search-text" type="text" name="airline_code" placeholder="Type here">
+            <?php
+                $code = $_GET["airline_code"];
+                if(empty($code)) {
+                    echo <<<EOD
+                        <input id="search" class="search-text" type="text" name="airline_code" placeholder="Type here">
+                    EOD;
+                } else {
+                    echo <<<EOD
+                        <input id="search" class="search-text" type="text" name="airline_code" value="$code">
+                    EOD;
+                }
+            ?>
             <label for="search" class="search-descriptors">Select a day: </label>
             <select id="days" name="days">
                 <option value="Monday">Monday</option>
@@ -42,68 +113,11 @@
                 <option value="Saturday">Saturday</option>
                 <option value="Sunday">Sunday</option>
             </select>
-            <button type="submit" class="search-submit" class="btn btn-success" method="get">
-                <i class="material-icons">search</i>
+            <button type="submit" class="search-submit" class="btn btn-success" method="get" style="display: flex; flex-direction: column;">
+                <img src="./img/magnifying.png" class="button_icon"/>
+                <h6 style="font-size: .5em !important; margin: unset; margin-top:1vh;">Search</h6>
             </button>
         </form>
-        <?php
-        if (empty($_GET["airline_code"]) || strlen($_GET["airline_code"]) != 2) {
-            echo "Please enter a valid airline code";
-        } else {
-            $code = $_GET['airline_code'];
-            $day = $_GET["days"];
-            // $result = $connection->query("SELECT Flight.AirlineCode as AirlineCode, Flight.ThreeDigitNumber as ThreeDigitNumber FROM Flight JOIN DayOffered ON Flight.AirlineCode=DayOffered.AirlineCode WHERE Flight.AirlineCode='$code' AND DayValue='$day' ");
-            $result = $connection->query(<<<EOD
-            SELECT
-                Flight.AirlineCode AS AirlineCode,
-                Flight.ThreeDigitNumber AS ThreeDigitNumber,
-                ArrivalAirport.City AS ArrivalCity,
-                DepartureAirport.City AS DepartureCity,
-                DayValue
-            FROM
-                Flight
-            JOIN DepartsFrom ON Flight.AirlineCode = DepartsFrom.AirlineCode AND Flight.ThreeDigitNumber = DepartsFrom.ThreeDigitNumber
-            JOIN ArrivesAt ON Flight.AirlineCode = ArrivesAt.AirlineCode AND Flight.ThreeDigitNumber = ArrivesAt.ThreeDigitNumber
-            JOIN Airport AS DepartureAirport
-            ON
-                DepartsFrom.AirportCode = DepartureAirport.AirportCode
-            JOIN Airport AS ArrivalAirport
-            ON
-                ArrivesAt.AirportCode = ArrivalAirport.AirportCode
-            JOIN DayOffered 
-            ON 
-                Flight.AirlineCode = DayOffered.AirlineCode AND Flight.ThreeDigitNumber = DayOffered.ThreeDigitNumber
-            WHERE DayOffered.DayValue="$day" AND Flight.AirlineCode="$code"
-        EOD);
-            $result_fetched = $result->fetch();
-            if (empty($result_fetched)) {
-                echo "No results found. Are you sure '$code' and '$day' are the correct airline code and day you are looking for?";
-            } else {
-                echo "<table id='data'>
-                            <tr>
-                            <th>Airline</th>
-                            <th>Flight Code</th>
-                            <th>Departing Airport Location</th>
-                            <th>Arriving Airport Location</th>
-                        </tr>";
-                echo "<tr>";
-                echo "<td>" . $result_fetched["AirlineCode"] . "</td>";
-                echo "<td>". $result_fetched["ThreeDigitNumber"]."</td>";
-                echo "<td>". $result_fetched["DepartureCity"]."</td>";
-                echo "<td>". $result_fetched["ArrivalCity"]."</td>";
-                echo "</tr>";
-                while ($row = $result->fetch()) {
-                    echo "<tr>";
-                    echo "<td>" . $row["AirlineCode"] . "</td>";
-                    echo "<td>". $row["ThreeDigitNumber"]."</td>";
-                    echo "<td>". $row["DepartureCity"]."</td>";
-                    echo "<td>". $row["ArrivalCity"]."</td>";
-                    echo "</tr>";
-                }
-                echo "</table>";
-            }
-        }
-        ?>
     </div>
 </body>
 

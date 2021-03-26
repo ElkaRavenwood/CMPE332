@@ -6,6 +6,7 @@ body {
     justify-content: center;
     background-color: lightcyan;
     margin-top: 0;
+    font-size: 1.25em;
 }
 
 table {
@@ -20,6 +21,23 @@ th, td {
     padding-left: 2vw;
     padding-right: 2vw;
     text-align: center;
+}
+
+h2 {
+    font-family: 'Tangerine', serif;
+    font-size: 2.5em;
+}
+
+h4 {
+    text-align: center;
+    font-size: 1.25em;
+}
+
+button {
+    background-color: unset;
+    border-radius: 5px;
+    box-shadow: 5px 5px teal;
+    font-size: 2em;
 }
 
 button:hover {
@@ -48,9 +66,13 @@ button:hover {
 .header_elem {
     height: inherit !important;
     text-align: center;
-    margin-right: 4vw;
+    margin-right: 2vw;
     text-decoration: none;
     color: black;
+}
+
+.header_elem_image {
+    margin-right: unset;
 }
 
 .page_name {
@@ -82,4 +104,8 @@ button:hover {
 
 .jc_space_between {
     justify-content: space-between;
+}
+
+.button_icon {
+    height: 50px;
 }
