@@ -1,0 +1,111 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    background-color: lightcyan;
+    margin-top: 0;
+    font-size: 1.25em;
+}
+
+table {
+    margin: auto;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+th, td {
+    padding-left: 2vw;
+    padding-right: 2vw;
+    text-align: center;
+}
+
+h2 {
+    font-family: 'Tangerine', serif;
+    font-size: 2.5em;
+}
+
+h4 {
+    text-align: center;
+    font-size: 1.25em;
+}
+
+button {
+    background-color: unset;
+    border-radius: 5px;
+    box-shadow: 5px 5px teal;
+    font-size: 2em;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.main_container {
+    width: 70vw;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    height: 100vh;
+    padding-left: 5vh;
+    padding-right: 5vh;
+}
+
+.header {
+    height: 10vh;
+    align-items: center;
+    display: flex;
+    align-content: center;
+    font-family: 'Tangerine', serif;
+    margin-bottom: 2vh;
+}
+
+.header_elem {
+    height: inherit !important;
+    text-align: center;
+    margin-right: 2vw;
+    text-decoration: none;
+    color: black;
+}
+
+.header_elem_image {
+    margin-right: unset;
+}
+
+.page_name {
+    font-family: 'Tangerine', serif;
+    text-align: center;
+    font-weight: bold;
+    font-size: 3em;
+    margin-bottom: 3vh;
+}
+
+.search {
+    display: flex;
+}
+
+.search-text, .search-submit, .search-descriptors {
+    padding: .5em;
+    margin: 1em;
+}
+
+.search-submit {
+    align-items: center;
+    display: flex;
+}
+
+.display_flex {
+    display: flex;
+    align-items: center;
+}
+
+.jc_space_between {
+    justify-content: space-between;
+}
+
+.button_icon {
+    height: 50px;
+}
